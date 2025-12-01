@@ -1,4 +1,4 @@
-import * as DailyRotateFile from 'winston-daily-rotate-file';
+import DailyRotateFile from 'winston-daily-rotate-file';
 import { format } from 'winston';
 import { Console } from 'winston/lib/winston/transports';
 import { utilities } from 'nest-winston';
