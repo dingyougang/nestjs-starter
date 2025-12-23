@@ -11,6 +11,7 @@ import { createKeyv } from '@keyv/redis';
 import { ConfigService } from '@nestjs/config';
 import { MailModule } from './common/mail/mail.module';
 import { UserModule } from './user/user.module';
+import { PrismaModule } from './database/prisma/prisma.module';
 @Module({
   imports: [
     ConfigModule,
@@ -79,6 +80,7 @@ import { UserModule } from './user/user.module';
     }),
     MailModule,
     UserModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [],

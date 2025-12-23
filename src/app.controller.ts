@@ -1,3 +1,4 @@
+import { PrismaService } from './database/prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
   Cache,
@@ -26,12 +27,16 @@ export class AppController {
     // 1.注册cache模块
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly mailerService: MailerService,
+    private prismaService: PrismaService,
   ) {}
 
   @Get()
   // @Version('1')
-  getHello(): string {
-    return 'hello world Version1';
+  async getHello(): Promise<any> {
+    const res = await this.prismaService.user.findMany({});
+    console.log('🚀 ~ AppController ~ getHello ~ res:', res);
+    // return 'hello world Version1';
+    return res;
   }
   @Get()
   @Version('2')
