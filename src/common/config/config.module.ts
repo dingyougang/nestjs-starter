@@ -8,7 +8,7 @@ const schema = Joi.object({
     .valid('development', 'production', 'test')
     .default('development'),
   PORT: Joi.number().default(3000),
-  DB_HOST: Joi.string().ip(),
+  // DB_HOST: Joi.string().ip(),
 });
 @Module({
   imports: [

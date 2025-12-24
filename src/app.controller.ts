@@ -1,4 +1,4 @@
-import { PrismaService } from './database/prisma/prisma.service';
+// import { PrismaService } from './database/prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
   Cache,
@@ -13,6 +13,9 @@ import {
   // UseInterceptors,
   Version,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user/entities/user.entity';
+import { Repository } from 'typeorm';
 // import { InjectRedis } from '@nestjs-modules/ioredis';
 // import Redis from 'ioredis';
 // let a = 1;
@@ -27,15 +30,24 @@ export class AppController {
     // 1.注册cache模块
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly mailerService: MailerService,
-    private prismaService: PrismaService,
+    // private prismaService: PrismaService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   @Get()
   // @Version('1')
-  async getHello(): Promise<any> {
-    const res = await this.prismaService.user.findMany({});
-    console.log('🚀 ~ AppController ~ getHello ~ res:', res);
-    // return 'hello world Version1';
+  async getUser1(): Promise<any> {
+    // const res = await this.prismaService.user.findMany({});
+    // console.log('🚀 ~ AppController ~ getHello ~ res:', res);
+    // return res;
+    return 'hello world Version1';
+  }
+
+  @Get('user2')
+  async getUser2(): Promise<any> {
+    // 3. typeorm使用
+    const res = await this.userRepository.find();
+    console.log('🚀 ~ AppController ~ getUser ~ res:', res);
     return res;
   }
   @Get()

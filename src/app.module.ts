@@ -11,7 +11,9 @@ import { createKeyv } from '@keyv/redis';
 import { ConfigService } from '@nestjs/config';
 import { MailModule } from './common/mail/mail.module';
 import { UserModule } from './user/user.module';
-import { PrismaModule } from './database/prisma/prisma.module';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { User } from './user/entities/user.entity';
+// import { PrismaModule } from './database/prisma/prisma.module';
 @Module({
   imports: [
     ConfigModule,
@@ -25,7 +27,7 @@ import { PrismaModule } from './database/prisma/prisma.module';
     // }),
     // 1.redis 注册
     // RedisModule.forRootAsync({
-    // 注入ConfigService
+    //   // 注入ConfigService
     //   inject: [ConfigService],
     //   useFactory: (configService: ConfigService) => {
     //     console.log(
@@ -80,7 +82,22 @@ import { PrismaModule } from './database/prisma/prisma.module';
     }),
     MailModule,
     UserModule,
-    PrismaModule,
+    // PrismaModule,
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        ({
+          type: configService.get('DB_TYPE'),
+          host: configService.get('DB_HOST'),
+          port: configService.get('DB_PORT'),
+          username: configService.get('DB_USERNAME'),
+          password: configService.get('DB_PASSWORD'),
+          database: configService.get('DB_DATABASE'),
+          autoLoadEntities: Boolean(configService.get('DB_AUTOLOAD', false)),
+          synchronize: Boolean(configService.get('DB_SYNC', false)),
+        }) as TypeOrmModuleOptions,
+    }),
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],
   providers: [],
