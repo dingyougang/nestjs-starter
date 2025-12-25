@@ -97,7 +97,23 @@ import { User } from './user/entities/user.entity';
           synchronize: Boolean(configService.get('DB_SYNC', false)),
         }) as TypeOrmModuleOptions,
     }),
+    TypeOrmModule.forRootAsync({
+      name: 'mysql1',
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        ({
+          type: configService.get('DB_TYPE'),
+          host: configService.get('DB_HOST'),
+          port: configService.get('DB_PORT'),
+          username: configService.get('DB_USERNAME'),
+          password: configService.get('DB_PASSWORD'),
+          database: 'test2',
+          autoLoadEntities: Boolean(configService.get('DB_AUTOLOAD', false)),
+          synchronize: Boolean(configService.get('DB_SYNC', false)),
+        }) as TypeOrmModuleOptions,
+    }),
     TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User], 'mysql1'),
   ],
   controllers: [AppController],
   providers: [],

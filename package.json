@@ -19,7 +19,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm":"typeorm-ts-node-commonjs -d ormconfig.ts",
+    "typeorm:sync":"pnpm typeorm schema:sync",
+    "typeorm:drop":"pnpm typeorm schema:drop"
   },
   "dependencies": {
     "@keyv/redis": "^5.1.4",
@@ -38,6 +41,7 @@
     "@swc/jest": "^0.2.39",
     "cache-manager": "^7.2.5",
     "cache-manager-ioredis-yet": "^2.1.2",
+    "dotenv": "^17.2.3",
     "handlebars": "^4.7.8",
     "ioredis": "^5.8.2",
     "joi": "17.12",

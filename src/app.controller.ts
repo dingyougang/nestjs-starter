@@ -31,7 +31,7 @@ export class AppController {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly mailerService: MailerService,
     // private prismaService: PrismaService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    // @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   @Get()
@@ -46,9 +46,10 @@ export class AppController {
   @Get('user2')
   async getUser2(): Promise<any> {
     // 3. typeorm使用
-    const res = await this.userRepository.find();
-    console.log('🚀 ~ AppController ~ getUser ~ res:', res);
-    return res;
+    // const res = await this.userRepository.find();
+    // console.log('🚀 ~ AppController ~ getUser ~ res:', res);
+    // return res;
+    return 'getUser2';
   }
   @Get()
   @Version('2')
