@@ -33,7 +33,7 @@ async function bootstrap() {
     const httpAdater = app.get(HttpAdapterHost);
     app.useGlobalFilters(new AllExceptionFilter(httpAdater));
   }
-
+  app.enableShutdownHooks();
   // await app.listen(process.env.PORT ?? 3000);
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);

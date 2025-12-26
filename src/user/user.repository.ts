@@ -8,19 +8,19 @@ import { Request } from 'express';
 export class UserRepository {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    @InjectRepository(User, 'mysql1')
-    private userRepository1: Repository<User>,
+    // @InjectRepository(User, 'mysql1')
+    // private userRepository1: Repository<User>,
     @Inject(REQUEST)
     private request: Request,
   ) {}
   getRepository() {
     // const { query } = this.request;
     // const { db } = query;
-    const headers = this.request.headers;
-    const tenantId = headers['x-tenant-id'];
-    if (tenantId == 'mysql1') {
-      return this.userRepository1;
-    }
-    return this.userRepository;
+    // const headers = this.request.headers;
+    // const tenantId = headers['x-tenant-id'];
+    // if (tenantId == 'mysql1') {
+    //   return this.userRepository1;
+    // }
+    // return this.userRepository;
   }
 }

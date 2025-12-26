@@ -6,12 +6,17 @@ import {
   //  CacheInterceptor
 } from '@nestjs/cache-manager';
 import {
+  Body,
   Controller,
   Get,
   Inject,
+  Param,
+  Post,
   Query,
+  Headers,
   // UseInterceptors,
   Version,
+  Ip,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
@@ -91,5 +96,22 @@ export class AppController {
         console.log('发送邮件失败', err);
       });
     return 'sendMail';
+  }
+  @Post(':id')
+  async postHello(
+    @Query('page') page: number,
+    @Param('id') id: string,
+    @Body() body: any,
+    @Headers('x-tenant-id') tenantId: string,
+    @Ip() ip: string,
+  ) {
+    console.log('🚀 ~ AppController ~ postHello ~ body:', page, id, body);
+    return {
+      page,
+      id,
+      body,
+      tenantId,
+      ip,
+    };
   }
 }

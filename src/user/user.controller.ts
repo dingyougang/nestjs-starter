@@ -12,24 +12,23 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 // import { UpdateUserDto } from './dto/update-user.dto';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 // import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
-  private userRepository: Repository<User>;
+  // private userRepository: Repository<User>;
   constructor(
     private readonly userService: UserService,
-    // @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     // @InjectRepository(User, 'mysql1')
     // private readonly userRepository1: Repository<User>,
-    private repository: UserRepository,
+    // private repository: UserRepository,
   ) {
-    this.userRepository = this.repository.getRepository();
+    // this.userRepository = this.repository.getRepository();
   }
 
   @Post()

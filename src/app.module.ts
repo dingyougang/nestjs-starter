@@ -11,9 +11,17 @@ import { createKeyv } from '@keyv/redis';
 import { ConfigService } from '@nestjs/config';
 import { MailModule } from './common/mail/mail.module';
 import { UserModule } from './user/user.module';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import {
+  TypeOrmModule,
+  //  TypeOrmModuleOptions
+} from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
+import { TypeOrmConfigService } from './database/typeorm/typeorm-config.service';
+import { DataSource } from 'typeorm';
+import { AppService } from './app.service';
 // import { PrismaModule } from './database/prisma/prisma.module';
+
+const connections = new Map();
 @Module({
   imports: [
     ConfigModule,
@@ -83,39 +91,51 @@ import { User } from './user/entities/user.entity';
     MailModule,
     UserModule,
     // PrismaModule,
+    // TypeOrmModule.forRootAsync({
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService) =>
+    //     ({
+    //       type: configService.get('DB_TYPE'),
+    //       host: configService.get('DB_HOST'),
+    //       port: configService.get('DB_PORT'),
+    //       username: configService.get('DB_USERNAME'),
+    //       password: configService.get('DB_PASSWORD'),
+    //       database: configService.get('DB_DATABASE'),
+    //       autoLoadEntities: Boolean(configService.get('DB_AUTOLOAD', false)),
+    //       synchronize: Boolean(configService.get('DB_SYNC', false)),
+    //     }) as TypeOrmModuleOptions,
+    // }),
     TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) =>
-        ({
-          type: configService.get('DB_TYPE'),
-          host: configService.get('DB_HOST'),
-          port: configService.get('DB_PORT'),
-          username: configService.get('DB_USERNAME'),
-          password: configService.get('DB_PASSWORD'),
-          database: configService.get('DB_DATABASE'),
-          autoLoadEntities: Boolean(configService.get('DB_AUTOLOAD', false)),
-          synchronize: Boolean(configService.get('DB_SYNC', false)),
-        }) as TypeOrmModuleOptions,
-    }),
-    TypeOrmModule.forRootAsync({
-      name: 'mysql1',
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) =>
-        ({
-          type: configService.get('DB_TYPE'),
-          host: configService.get('DB_HOST'),
-          port: configService.get('DB_PORT'),
-          username: configService.get('DB_USERNAME'),
-          password: configService.get('DB_PASSWORD'),
-          database: 'test2',
-          autoLoadEntities: Boolean(configService.get('DB_AUTOLOAD', false)),
-          synchronize: Boolean(configService.get('DB_SYNC', false)),
-        }) as TypeOrmModuleOptions,
+      // name: 'mysql1',
+      inject: [],
+      useClass: TypeOrmConfigService,
+      dataSourceFactory: async (options) => {
+        console.log('keys====>', connections.keys());
+
+        const tenantId = options['tenantId'] || 'default';
+        if (tenantId && connections.has(tenantId)) {
+          console.log('使用缓存数据源');
+          return connections.get(tenantId);
+        }
+        console.log('dataSource====>');
+
+        // 拿到tenantId
+        const dataSource = await new DataSource(options).initialize();
+        connections.set(tenantId, dataSource);
+        return dataSource;
+      },
+      extraProviders: [],
     }),
     TypeOrmModule.forFeature([User]),
-    TypeOrmModule.forFeature([User], 'mysql1'),
+    // TypeOrmModule.forFeature([User], 'mysql1'),
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    AppService,
+    {
+      provide: 'TYPEORM_CONNECTION',
+      useValue: connections,
+    },
+  ],
 })
 export class AppModule {}
