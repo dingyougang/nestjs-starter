@@ -1,4 +1,5 @@
-// import { PrismaService } from './database/prisma/prisma.service';
+// import { UserRepository } from './user/user.repository';
+// import { PrismaConfigService } from './database/prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
   Cache,
@@ -18,9 +19,11 @@ import {
   Version,
   Ip,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user/entities/user.entity';
-import { Repository } from 'typeorm';
+// import { InjectRepository } from '@nestjs/typeorm';
+// import { User } from './user/entities/user.entity';
+// import { Repository } from 'typeorm';
+// import { PrismaClient } from '@prisma/client';
+// import { PRISMA_CONNETIONS } from './database/prisma/prisma.constant';
 // import { InjectRedis } from '@nestjs-modules/ioredis';
 // import Redis from 'ioredis';
 // let a = 1;
@@ -35,24 +38,38 @@ export class AppController {
     // 1.注册cache模块
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly mailerService: MailerService,
-    // private prismaService: PrismaService,
+    // private userRepository: UserRepository,
+    // private PrismaConfigService: PrismaConfigService,
+    // @Inject('prisma1')
+    // private PrismaConfigService: PrismaClient, //PrismaClient 只有它才有user等方法
+    // @Inject(PRISMA_CONNETIONS)
+    // private connections: Record<string, PrismaClient>,
+    // @Inject('prisma2')
+    // private PrismaConfigService2: PrismaClient, //PrismaClient 只有它才有user等方法
     // @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   @Get()
   // @Version('1')
   async getUser1(): Promise<any> {
-    // const res = await this.prismaService.user.findMany({});
+    // console.log('connections', this.connections);
+
+    // const res = await this.PrismaConfigService.user.findMany({});
     // console.log('🚀 ~ AppController ~ getHello ~ res:', res);
+    // const res = await this.userRepository.find();
     // return res;
     return 'hello world Version1';
   }
 
-  @Get('user2')
+  @Get()
+  @Version('3')
   async getUser2(): Promise<any> {
     // 3. typeorm使用
     // const res = await this.userRepository.find();
     // console.log('🚀 ~ AppController ~ getUser ~ res:', res);
+    // return res;
+    // const res = await this.PrismaConfigService2.user.findMany({});
+    // console.log('🚀 ~ AppController ~ getHello ~ res:', res);
     // return res;
     return 'getUser2';
   }

@@ -20,9 +20,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm":"typeorm-ts-node-commonjs -d ormconfig.ts",
-    "typeorm:sync":"pnpm typeorm schema:sync",
-    "typeorm:drop":"pnpm typeorm schema:drop"
+    "typeorm": "typeorm-ts-node-commonjs -d ormconfig.ts",
+    "typeorm:sync": "pnpm typeorm schema:sync",
+    "typeorm:drop": "pnpm typeorm schema:drop"
   },
   "dependencies": {
     "@keyv/redis": "^5.1.4",
@@ -35,7 +35,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "10.0.2",
-    "@prisma/client": "5.12.1",
+    "@prisma/client": "5.22.0",
     "@swc/cli": "^0.7.9",
     "@swc/core": "^1.15.3",
     "@swc/jest": "^0.2.39",
@@ -49,9 +49,10 @@
     "mysql2": "^3.16.0",
     "nest-winston": "^1.10.2",
     "nodemailer": "^7.0.11",
-    "prisma": "^5.12.1",
+    "prisma": "^5.22.0",
+    "prisma-mysql": "link:prisma/clients/mysql",
     "request-ip": "3.3.0",
-    "rxjs": "^7.8.1",
+    "rxjs": "^7.8.2",
     "typeorm": "^0.3.28",
     "winston": "^3.18.3",
     "winston-daily-rotate-file": "^5.0.0"

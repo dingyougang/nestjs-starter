@@ -1,19 +1,17 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { User } from './entities/user.entity';
-// import { UserRepository } from './user.repository';
+import { TYPEORM_DATABASE } from '@/database/database.constants';
+import { UserTypeormRepository } from './repositories/typeorm.repositor';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserPrismaRepository } from './repositories/prisma.repositor';
+import { UserRepository } from './user.repository';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User]),
-    // TypeOrmModule.forFeature([User], 'mysql1'),
-  ],
+  imports: [TypeOrmModule.forFeature([User], TYPEORM_DATABASE)],
   controllers: [UserController],
-  providers: [
-    UserService,
-    //  UserRepository
-  ],
+  providers: [UserTypeormRepository, UserPrismaRepository, UserRepository],
+  // exports: [UserRepository],
 })
 export class UserModule {}

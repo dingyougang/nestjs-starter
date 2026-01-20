@@ -14,7 +14,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     connectionName?: string,
   ): TypeOrmModuleOptions | Promise<TypeOrmModuleOptions> {
     const headers = this.request.headers;
-    const tenantId = headers['x-tenant-id'];
+    const tenantId = headers['x-tenant-id'] || 'default';
     let config = {};
     const envConfig = {
       type: this.configService.get('DB_TYPE'),
@@ -25,15 +25,20 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       autoLoadEntities: Boolean(this.configService.get('DB_AUTOLOAD', false)),
       synchronize: Boolean(this.configService.get('DB_SYNC', false)),
     };
-    if (tenantId == 'mysql1') {
+    if (tenantId == 'mysql2') {
       config = {
         type: 'mysql',
         database: 'test2',
       };
+    } else if (tenantId == 'mysql3') {
+      config = {
+        type: 'mysql',
+        database: 'test3',
+      };
     } else {
       config = {
         type: 'mysql',
-        database: 'test1',
+        database: 'test2',
       };
     }
 
