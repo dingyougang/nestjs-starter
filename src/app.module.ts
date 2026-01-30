@@ -14,6 +14,8 @@ import { UserModule } from './user/user.module';
 
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AdminGuard } from './common/guards/admin.guard';
 
 @Module({
   imports: [
@@ -87,6 +89,12 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    // 全局守卫
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AdminGuard,
+    // },
+  ],
 })
 export class AppModule {}

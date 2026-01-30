@@ -15,7 +15,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('/signin')
   signin(@Body() dto: SigninUserDto) {
-    console.log("🚀 ~ AuthController ~ signin ~ dto:", dto)
+    console.log('🚀 ~ AuthController ~ signin ~ dto:', dto);
     const { username, password } = dto;
     return this.authService.signin(username, password);
   }

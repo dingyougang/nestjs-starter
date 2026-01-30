@@ -1,4 +1,6 @@
+import { Public } from '@/common/decorators/public,decorator';
 import { AdminGuard } from '@/common/guards/admin.guard';
+import { JwtGuard } from '@/common/guards/jwt.guard';
 import { UserRepository } from '@/user/user.repository';
 import {
   Controller,
@@ -8,15 +10,16 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
-@UseGuards(AuthGuard('jwt'), AdminGuard)
+// @UseGuards(AuthGuard('jwt'), AdminGuard)
+@UseGuards(JwtGuard, AdminGuard)
 export class UserController {
   constructor(private userRepository: UserRepository) {}
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Version('1')
   async getUser(
     @Query('id', ParseIntPipe) id: number,
@@ -26,6 +29,7 @@ export class UserController {
     console.log(typeof id, 'id');
     return await this.userRepository.findOne(id);
   }
+  // @Public()
   @Get('test')
   // @UseGuards(AuthGuard('jwt'), AdminGuard)
   test() {

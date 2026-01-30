@@ -35,7 +35,6 @@ async function bootstrap() {
     app.useGlobalFilters(new AllExceptionFilter(httpAdater));
   }
   app.enableShutdownHooks();
-  // await app.listen(process.env.PORT ?? 3000);
   // 全局管道
   app.useGlobalPipes(
     new ValidationPipe({
@@ -43,6 +42,8 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  // 全局守卫 无法使用UserService一类依赖注入的实例
+  // app.useGlobalGuards();
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }
