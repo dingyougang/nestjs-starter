@@ -11,8 +11,12 @@ export class UserTypeormRepository implements UserAdapter {
     @InjectRepository(User, TYPEORM_DATABASE)
     private userRepository: Repository<User>,
   ) {}
-  find(): Promise<any[]> {
-    return this.userRepository.find({});
+  find(username: string): Promise<any[]> {
+    return this.userRepository.find({
+      where: {
+        username,
+      },
+    });
   }
   findOne(id: number): Promise<any> {
     return this.userRepository.findOne({

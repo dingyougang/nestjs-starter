@@ -13,6 +13,7 @@ import { MailModule } from './common/mail/mail.module';
 import { UserModule } from './user/user.module';
 
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -83,6 +84,7 @@ import { DatabaseModule } from './database/database.module';
     MailModule,
     DatabaseModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [],

@@ -1,6 +1,6 @@
 import { UserPrismaRepository } from './repositories/prisma.repositor';
 import { UserTypeormRepository } from './repositories/typeorm.repositor';
-import { Inject } from '@nestjs/common';
+import { Inject, Optional } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { UserAbstractRepository } from './user-abstract.repository';
@@ -10,12 +10,14 @@ export class UserRepository implements UserAbstractRepository {
   constructor(
     @Inject(REQUEST)
     private request: Request,
+    @Optional()
     private userTypeormRepository: UserTypeormRepository,
+    @Optional()
     private userPrismaRepository: UserPrismaRepository,
   ) {}
-  find(): Promise<any[]> {
+  find(username: string): Promise<any[]> {
     const client = this.getRepository();
-    return client.find();
+    return client.find(username);
   }
   findOne(id: number): Promise<any> {
     const client = this.getRepository();

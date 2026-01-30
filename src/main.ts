@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AllExceptionFilter } from './common/filters/all-exception.filter';
 import { VERSION_NEUTRAL, VersioningType } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
@@ -35,6 +36,13 @@ async function bootstrap() {
   }
   app.enableShutdownHooks();
   // await app.listen(process.env.PORT ?? 3000);
+  // 全局管道
+  app.useGlobalPipes(
+    new ValidationPipe({
+      // 移除多余字段
+      whitelist: true,
+    }),
+  );
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }

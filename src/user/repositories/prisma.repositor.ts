@@ -8,8 +8,12 @@ export class UserPrismaRepository implements UserAbstractRepository {
     @Inject(PRISMA_DATABASE)
     private prismaClient: PrismaClient,
   ) {}
-  find(): Promise<any[]> {
-    return this.prismaClient.user.findMany({});
+  find(username: string): Promise<any[]> {
+    return this.prismaClient.user.findMany({
+      where: {
+        username,
+      },
+    });
   }
   findOne(id: number): Promise<any> {
     return this.prismaClient.user.findUnique({
