@@ -1,4 +1,4 @@
-import { Public } from '@/common/decorators/public,decorator';
+import { Public } from '@/common/decorators/public.decorator';
 import { AdminGuard } from '@/common/guards/admin.guard';
 import { JwtGuard } from '@/common/guards/jwt.guard';
 import { UserRepository } from '@/user/user.repository';

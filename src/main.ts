@@ -5,6 +5,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AllExceptionFilter } from './common/filters/all-exception.filter';
 import { VERSION_NEUTRAL, VersioningType } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common';
+// import { SerializeInterceptor } from './common/interceptors/serialize.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
@@ -44,6 +45,9 @@ async function bootstrap() {
   );
   // 全局守卫 无法使用UserService一类依赖注入的实例
   // app.useGlobalGuards();
+
+  // 全局拦截器
+  // app.useGlobalInterceptors(new SerializeInterceptor());
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }

@@ -5,7 +5,7 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { UserAbstractRepository } from './user-abstract.repository';
 import { UserAdapter } from './user.interface';
-
+import * as argon2 from 'argon2';
 export class UserRepository implements UserAbstractRepository {
   constructor(
     @Inject(REQUEST)
@@ -23,8 +23,14 @@ export class UserRepository implements UserAbstractRepository {
     const client = this.getRepository();
     return client.findOne(id);
   }
-  create(userObj: any): Promise<any> {
+  async create(userObj: any): Promise<any> {
     const client = this.getRepository();
+    // 对密码进行hash加密
+    const newHash = await argon2.hash(userObj.password);
+    userObj = {
+      ...userObj,
+      password: newHash,
+    };
     return client.create(userObj);
   }
   update(userObj: any): Promise<any> {
