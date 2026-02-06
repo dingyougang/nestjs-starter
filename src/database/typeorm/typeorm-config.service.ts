@@ -38,7 +38,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     } else {
       config = {
         type: 'mysql',
-        database: 'test2',
+        database: 'test1',
       };
     }
 

@@ -23,7 +23,9 @@
     "typeorm": "typeorm-ts-node-commonjs -d ormconfig.ts",
     "typeorm:sync": "pnpm typeorm schema:sync",
     "typeorm:drop": "pnpm typeorm schema:drop",
-    "prisma:db:push": "prisma db push"
+    "prisma:db:push": "prisma db push",
+    "prisma:db:reset": "prisma migrate reset",
+    "prisma:db:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@keyv/redis": "^5.1.4",

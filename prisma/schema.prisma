@@ -10,16 +10,57 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./clients/mysql"
+  output   = "./clients/mysql"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-model User{
-  id Int @id @default(autoincrement())
-  username String @unique
-  password String
-  @@map("user")
+
+model User {
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
+  password  String
+  userRoles UserRole[]
+
+  @@map("users")
+}
+
+model Role {
+  id    Int        @id @default(autoincrement())
+  name  String     @unique
+  users UserRole[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  userId Int
+  roleId Int
+  Role   Role @relation(fields: [roleId], references: [id])
+  User   User @relation(fields: [userId], references: [id])
+
+  @@id([roleId, userId])
+  @@map("user_roles")
+}
+
+model Permission {
+  id             Int              @id @default(autoincrement())
+  name           String           @unique // 权限名称 Control + Route(User: Read)
+  action         String//READ, DELETE, UPDATE, CREATE,MANAGE
+  description    String?
+  RolePermission RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       Int
+  permissionId Int
+  Role         Role       @relation(fields: [roleId], references: [id])
+  Permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
 }
